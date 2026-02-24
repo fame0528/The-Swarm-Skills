@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "description": "Spencer Proactive Agent v2.0 Configuration — Phase 1 Feature Flags",
+  "version": "2.0.0-alpha.1",
+  "network": {
+    "proxy": {
+      "enabled": false,
+      "http": "http://127.0.0.1:8080",
+      "https": "http://127.0.0.1:8080",
+      "bypass": "localhost;127.0.0.1"
+    },
+    "retry": {
+      "enabled": true,
+      "maxAttempts": 3,
+      "backoffMs": 1000,
+      "maxBackoffMs": 10000
+    },
+    "healthCheck": {
+      "enabled": true,
+      "intervalMinutes": 5,
+      "targets": [
+        { "name": "Discord", "url": "https://discord.com/api/v10/gateway", "expectedCode": 200 },
+        { "name": "GitHub", "url": "https://api.github.com/rate_limit", "expectedCode": 200 }
+      ]
+    }
+  },
+  "features": {
+    "invisible-assistant": {
+      "enabled": true,
+      "bufferCompression": {
+        "thresholdBytes": 200000,
+        "keepLines": 50,
+        "summaryPath": "memory/topics/active-session.md"
+      },
+      "milestoneAlerts": {
+        "enabled": true,
+        "triggers": {
+          "gitPush": true,
+          "buildSuccess": true,
+          "buildFailure": true,
+          "deepWork": {
+            "enabled": true,
+            "thresholdMinutes": 240
+          },
+          "selfCareMissed": true
+        }
+      },
+      "wakeOnTouch": {
+        "enabled": false,
+        "triggers": ["discord_mention", "file_change_scripts", "manual_atlas_status"]
+      }
+    },
+    "flow-aware-scheduling": {
+      "enabled": true,
+      "quietHours": {
+        "start": "22:00",
+        "end": "07:00",
+        "timezone": "America/New_York"
+      },
+      "deepWork": {
+        "enabled": true,
+        "detection": {
+          "typingThresholdMinutes": 15,
+          "gitPushWindowMinutes": 30,
+          "discordDNDCheck": true,
+          "bufferSpikeKBPerMin": 5
+        },
+        "suppressNonCritical": true
+      },
+      "notificationClustering": {
+        "enabled": true,
+        "batches": [
+          { "time": "09:00", "label": "morning" },
+          { "time": "14:00", "label": "afternoon" },
+          { "time": "21:00", "label": "evening" }
+        ],
+        "maxPerBatch": 10
+      },
+      "adaptiveFrequency": {
+        "enabled": true,
+        "healthCheckIntervals": {
+          "unstable": "30m",
+          "normal": "2h",
+          "stable": "4h"
+        },
+        "stabilityThresholds": {
+          "unstable": 0.3,
+          "stable": 0.1
+        }
+      },
+      "rhythmIntelligence": {
+        "enabled": true,
+        "observationDays": 7,
+        "reportTime": "08:00"
+      },
+      "memoryCompanion": {
+        "enabled": true,
+        "decisionReplay": {
+          "enabled": true,
+          "accessThresholdHours": 24
+        },
+        "habitStreaks": {
+          "enabled": true,
+          "trackedHabits": ["exercise", "writing", "learning", "deep-work"]
+        },
+        "contextRescue": {
+          "enabled": true,
+          "autoSummarizeOnCompress": true
+        }
+      }
+    },
+    "personal-dashboard": {
+      "enabled": true,
+      "refreshIntervalMinutes": 30,
+      "outputPath": "dashboard/latest.json",
+      "htmlPath": "dashboard/index.html",
+      "autoPostToHyperion": false,
+      "postTime": "08:00"
+    },
+    "time-savers": {
+      "enabled": true,
+      "autoObsidianSync": true,
+      "skillAutoRegistration": true,
+      "oneClickDiscord": true,
+      "githubShortcuts": true,
+      "credentialVault": true,
+      "notionSync": {
+        "enabled": false,
+        "schedule": "0 * * * *"
+      },
+      "voiceSummary": {
+        "enabled": false,
+        "schedule": "0 7 * * *"
+      }
+    },
+    "proactive-docs": {
+      "enabled": true,
+      "autoReadmeUpdates": {
+        "enabled": true,
+        "requireReaction": false,
+        "reactionTimeoutHours": 24
+      },
+      "wikiSync": {
+        "enabled": true,
+        "schedule": "09:00"
+      },
+      "stalenessNudges": true,
+      "empireRegistry": true
+    },
+    "stealth-security": {
+      "enabled": true,
+      "logRedaction": {
+        "enabled": true,
+        "patterns": [
+          "Bearer\\s+[A-Za-z0-9\\-_]+",
+          "Basic\\s+[A-Za-z0-9\\-_=]+",
+          "ghp_[A-Za-z0-9]+",
+          "sk_live_[A-Za-z0-9]+",
+          "xoxb-[A-Za-z0-9]+"
+        ]
+      },
+      "perimeterMonitoring": {
+        "enabled": true,
+        "sensitivePaths": [
+          ".secrets",
+          "credentials",
+          "config/spencer-agent-v2.json"
+        ],
+        "checkIntervalMinutes": 60
+      },
+      "securityAudit": {
+        "enabled": true,
+        "schedule": "0 6 * * 0"
+      }
+    },
+  },
+  "communication": {
+    "reportToAtlas": true,
+    "logLevel": "INFO",
+    "suppressAllDuringQuietHours": true
+  }
+}

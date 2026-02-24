@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "description": "Spencer Proactive Agent v2.0 — Phase 1 Cron Job Manifest",
+  "version": "2.0.0-alpha.1",
+  "jobs": [
+    {
+      "id": "buffer-compress",
+      "name": "Buffer Auto-Compression",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 300000,
+        "anchorMs": 0
+      },
+      "payload": {
+        "kind": "script",
+        "path": "scripts/Compress-Buffer.ps1",
+        "args": []
+      },
+      "constraints": {
+        "respectQuietHours": true,
+        "respectDeepWork": false,
+        "maxDurationSeconds": 30
+      },
+      "logging": {
+        "output": "memory/logs/buffer-compression.log",
+        "level": "INFO"
+      },
+      "description": "Compresses SESSION-STATE.md when it exceeds 200KB threshold. Runs every 5 minutes."
+    },
+    {
+      "id": "milestone-alerts",
+      "name": "Milestone Alerts Detector",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 300000,
+        "anchorMs": 0
+      },
+      "payload": {
+        "kind": "script",
+        "path": "scripts/Milestone-Alerts.ps1",
+        "args": []
+      },
+      "constraints": {
+        "respectQuietHours": true,
+        "respectDeepWork": false,
+        "maxDurationSeconds": 15
+      },
+      "logging": {
+        "output": "memory/logs/milestone-alerts.log",
+        "level": "INFO"
+      },
+      "description": "Detects meaningful events (GitHub push, deep work completion, daily note missing) and logs them for potential alerts."
+    },
+    {
+      "id": "empire-metrics",
+      "name": "Empire Metrics Aggregator",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 0
+      },
+      "payload": {
+        "kind": "script",
+        "path": "scripts/Empire-Metrics.ps1",
+        "args": []
+      },
+      "constraints": {
+        "respectQuietHours": false,
+        "respectDeepWork": false,
+        "maxDurationSeconds": 60
+      },
+      "adaptive": true,
+      "logging": {
+        "output": "memory/logs/empire-metrics.log",
+        "level": "INFO"
+      },
+      "description": "Aggregates KPIs for Hyperion dashboard. Runs every 30 minutes, frequency adaptive based on system stability."
+    },
+    {
+      "id": "daily-note-check",
+      "name": "Daily Note Reminder",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "tz": "America/New_York"
+      },
+      "payload": {
+        "kind": "script",
+        "path": "scripts/Daily-Note-Check.ps1",
+        "args": []
+      },
+      "constraints": {
+        "respectQuietHours": false,
+        "respectDeepWork": false,
+        "maxDurationSeconds": 10
+      },
+      "logging": {
+        "output": "memory/logs/daily-note-check.log",
+        "level": "INFO"
+      },
+      "description": "Checks if daily note exists; if missing, sends gentle reminder to Atlas channel."
+    },
+    {
+      "id": "wellness-harmony",
+      "name": "Evening Routine Harmony",
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 21 * * *",
+        "tz": "America/New_York"
+      },
+      "payload": {
+        "kind": "script",
+        "path": "scripts/Wellness-Harmony.ps1",
+        "args": []
+      },
+      "constraints": {
+        "respectQuietHours": false,
+        "respectDeepWork": false,
+        "maxDurationSeconds": 15
+      },
+      "logging": {
+        "output": "memory/logs/wellness-harmony.log",
+        "level": "INFO"
+      },
+      "description": "Evening routine check at 9:30 PM: meds, teeth, journal. Sends reminder if not completed."
+    },
+    {
+      "id": "context-compact",
+      "name": "Weekly Context Compact",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 3 * * 0",
+        "tz": "America/New_York"
+      },
+      "payload": {
+        "kind": "script",
+        "path": "scripts/Context-Compact.ps1",
+        "args": []
+      },
+      "constraints": {
+        "respectQuietHours": true,
+        "respectDeepWork": false,
+        "maxDurationSeconds": 120
+      },
+      "logging": {
+        "output": "memory/logs/context-compact.log",
+        "level": "INFO"
+      },
+      "description": "Sunday 3 AM: compresses long-term memory, archives old logs, cleans temp files."
+    },
+    {
+      "id": "experiment-check",
+      "name": "Experiment Tracker",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 14400000,
+        "anchorMs": 0
+      },
+      "payload": {
+        "kind": "script",
+        "path": "scripts/Experiment-Check.ps1",
+        "args": []
+      },
+      "constraints": {
+        "respectQuietHours": false,
+        "respectDeepWork": false,
+        "maxDurationSeconds": 30
+      },
+      "logging": {
+        "output": "memory/logs/experiment-check.log",
+        "level": "INFO"
+      },
+      "description": "Every 4 hours: checks active experiments, updates status, notifies Prometheus of completed experiments."
+    }
+  ],
+  "install": {
+    "method": "openclaw cron import",
+    "args": ["--file", "cron-jobs.json"],
+    "postInstallMessage": "Phase 1 cron jobs installed. Use 'openclaw cron list' to verify."
+  }
+}

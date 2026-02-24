@@ -1,0 +1,11 @@
+{
+  "taskId": "task_1771021842000_btc",
+  "status": "COMPLETED",
+  "completedAt": "2026-02-13T22:42:00.000Z",
+  "durationMs": 385000,
+  "result": "Current Bitcoin price: $66,441.80 USD (source: CoinMarketCap)",
+  "delivered": true,
+  "deliveredAt": "2026-02-13T23:08:41.682Z",
+  "deliveryAttempts": 0,
+  "lastDeliveryError": null
+}

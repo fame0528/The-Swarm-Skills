@@ -1,0 +1,12 @@
+{
+  "taskId": "task_mlfi4ceu_0uif",
+  "status": "COMPLETED",
+  "completedAt": "2026-02-09T18:24:27.619Z",
+  "durationMs": 1,
+  "result": {
+    "summary": "OAuth 2.0 is better for third-party authorization, JWT is better for stateless API authentication.",
+    "recommendation": "Use JWT for your REST API, OAuth 2.0 if you need third-party login"
+  },
+  "delivered": true,
+  "deliveredAt": "2026-02-09T18:24:27.621Z"
+}

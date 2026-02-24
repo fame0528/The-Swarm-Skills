@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-02-20 07:38:00",
+  "version": "2.0.0-alpha.1",
+  "configPath": "C:\\Users\\spenc\\.openclaw\\workspace\\skills\\spencer-proactive-agent\\config\\spencer-agent-v2.json",
+  "enabledFeatures": [
+    "invisible-assistant",
+    "flow-aware-scheduling",
+    "personal-dashboard",
+    "time-savers",
+    "proactive-docs",
+    "stealth-security"
+  ]
+}
