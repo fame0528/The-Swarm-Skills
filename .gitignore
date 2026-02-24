@@ -38,6 +38,7 @@ coverage/
 # Credentials and secrets
 credentials/
 secrets/
+vaults/
 *.pem
 *.key
 
