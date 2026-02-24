@@ -1,0 +1,16 @@
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+credentials/
+vaults/
+*.db
+*.log
+.DS_Store
+.vscode/
+.idea/
+dist/
+build/
+coverage/
+tmp/
+temp/
